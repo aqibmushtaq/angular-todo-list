@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html ng-app>
     <head>
         <title>Bootstap 101 Template</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Bootstrap -->
         <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        
+        <!-- JS -->
+        <script src="bower_components/angular/angular.js"></script>
+        
+        <script src="js/task.js"></script>
         
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -14,34 +19,27 @@
         <![endif]-->
     </head>
     <body>
-        <div class="container">
+        <div ng-view class="container">
             <h1>Todo!</h1>
             
             <blockquote>Please try and complete as many as possible :)</blockquote>
             
             <div class="row">
                 <div class="col-md-10">
-                    <table class="table table-striped table-hover">
-                        <tbody class="">
+                    <table ng-controller="TaskCtrl" class="table table-striped table-hover">
+                        <tbody>
                             <tr>
                                 <th>Done</th>
-                                <th>Task</td>
+                                <th>Name</td>
                                 <th>Priority</td>
                             </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Task one</td>
-                                <td>High</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Task two</td>
-                                <td>Low</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>Task three</td>
-                                <td>Medium</td>
+                            <tr ng-repeat="task in tasks | orderBy:'priority'">
+                                <td ng-switch="{{task.done}}">
+                                    <input ng-switch-when="true" ng-model="task.done" type="checkbox" checked>
+                                    <input ng-switch-default ng-model="task.done" type="checkbox">
+                                </td>
+                                <td>{{task.name}}</td>
+                                <td>{{task.priority}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -65,6 +63,6 @@
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="https://code.jquery.com/jquery.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="js/bootstrap.min.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     </body>
 </html>

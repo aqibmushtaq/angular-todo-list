@@ -1,28 +1,43 @@
-//angular.module('task', ['ngRoute', 'firebase'])
-//.value('fbURL', 'https://angularjs-projects.firebaseio.com/')
-//.factory('Projects', function(angularFireCollection, fbURL) {
-//  return angularFireCollection(fbURL);
-//})
-//
-//.config(function($routeProvider) {
-//    $routeProvider
-//        .when('/', {
-//            controller: 'ListCtrl',
-//            templateUrl: 'list.html'
-//        });
-//})
-//
-//.controller('ListCtrl', function($scope, Tasks) {
-//    $scope.tasks = Tasks;
-//});
+var client = gazel.createClient();
+client.on('error', function(err) {
+    alert('Oh no, your browser doesn\'t support this website');
+});
 
 function TaskCtrl($scope) {
-    $scope.tasks = [
-        {done: false, name: "Learn AngularJS", priority: "High"},
-        {done: false, name: "Develop an Android application", priority: "Low"},
-        {done: true, name: "Learn EmberJS", priority: "Medium"}
-    ];
-    
-    
-}
 
+    $scope.tasks = [];
+    
+    $scope.getTasks = function () {
+        client.get('tasks', function(value) {
+            if (value && value.length > 0) {
+                $scope.tasks = value;
+                $scope.$apply()
+            }
+        })
+    };
+    
+    $scope.getTasks();
+    
+    $scope.add = function () {
+        $scope.tasks.push({done: false, name: $scope.taskName, priority: $scope.taskPriority});
+        $scope.$apply();
+        
+        $scope.setList($scope.tasks);
+    };
+    
+    $scope.setList = function (newList) {
+        client.set('tasks', newList, function(status) {
+            console.log('updated tasks on the client browser? ' + status);
+        });
+    };
+    
+    $scope.remove = function (name) {
+        var tasks = $scope.tasks;
+        for (var i = 0; i < tasks.length; i++) {
+            if (tasks[i].name == name)
+                tasks.splice(i, 1);
+        }
+        
+        $scope.setList($scope.tasks);
+    };
+}

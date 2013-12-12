@@ -3,11 +3,16 @@
     <head>
         <title>Bootstap 101 Template</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <!-- CSS -->
         <!-- Bootstrap -->
         <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
         
+        <link href="css/style.css" rel="stylesheet">
+        
         <!-- JS -->
         <script src="bower_components/angular/angular.js"></script>
+        <script src="js/lib/gazel.min.js"></script>
         
         <script src="js/task.js"></script>
         
@@ -22,40 +27,41 @@
         <div ng-view class="container">
             <h1>Todo!</h1>
             
-            <blockquote>Please try and complete as many as possible :)</blockquote>
-            
             <div class="row">
-                <div class="col-md-10">
-                    <table ng-controller="TaskCtrl" class="table table-striped table-hover">
-                        <tbody>
-                            <tr>
-                                <th>Done</th>
-                                <th>Name</td>
-                                <th>Priority</td>
-                            </tr>
-                            <tr ng-repeat="task in tasks | orderBy:'priority'">
-                                <td ng-switch="{{task.done}}">
-                                    <input ng-switch-when="true" ng-model="task.done" type="checkbox" checked>
-                                    <input ng-switch-default ng-model="task.done" type="checkbox">
-                                </td>
-                                <td>{{task.name}}</td>
-                                <td>{{task.priority}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-md-2">
-                    <form action="#" role="form">
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="user_email" placeholder="Email">
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" id="user_password" placeholder="Password">
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" class="form-control btn btn-primary" id="user_submit" value="Login">
-                        </div>
-                    </form>
+                <div class="col-md-12" ng-controller="TaskCtrl">
+                    <div class="row top-buffer">
+                        <form role="form" ng-submit="add()">
+                            <div class="col-md-4">
+                                <input type="text" class="form-control input-lg" ng-model="taskName" placeholder="New Task Name">
+                            </div>
+                            <div class="col-md-2">
+                                <select class="form-control input-lg" ng-model="taskPriority">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="submit" class="form-control input-lg btn btn-primary">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row top-buffer">
+                        <table class="table table-striped table-hover">
+                            <tbody>
+                                <tr>
+                                    <th>Done</th>
+                                    <th>Name</td>
+                                    <th>Priority</td>
+                                </tr>
+                                <tr ng-repeat="task in tasks | orderBy:'priority'">
+                                    <td><a ng-click="remove(task.name)" href="#" class="glyphicon glyphicon-ok"></a></tb>
+                                    <td>{{task.name}}</td>
+                                    <td>{{task.priority}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
